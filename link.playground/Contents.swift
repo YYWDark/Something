@@ -25,7 +25,7 @@ public class LinkedList<T> {
     
     func count() -> Int {
         guard var node = head else {return 0}
-        var count = 0
+        var count = 1
         while let next = node.next {
             count = count + 1
             node = next
@@ -37,10 +37,11 @@ public class LinkedList<T> {
     func node(index: Int) -> Node? {
          var index = index
          guard var node = head else {return nil}
+         var i = 0
          while let next = node.next {
-            index = index - 1
-            if index < 0 {return node}
+            if i == index {return node}
             node = next
+            i = i + 1
         }
         return nil
     }
@@ -53,19 +54,70 @@ public class LinkedList<T> {
         last.next = node
     }
     
-    func reciprocal(number: Int) -> Node? {
+    func print() {
+        guard var node = head else {return}
+        while let next = node.next {
+            Swift.print(next.value)
+            node = next
+        }
+    }
+    
+    func reciprocal(index: Int) -> Node? {
         //倒数第K
-        if number > self.count() {return nil}
+        if index >= self.count() {return nil}
         guard let head = head else {return nil}
-        var first = head
         var second = head
-        let node_k = self.node(index: number)
+        var node_k = self.node(index: index)
         while let firstNext = node_k?.next {
-            second = second.next
+            node_k = firstNext
+            second = second.next!
         }
         return second
     }
-    
 }
+
+extension LinkedList: CustomStringConvertible {
+    public var description: String {
+        var s = "["
+        var node = head
+        while node != nil {
+            s += "\(node!.value)"
+            node = node!.next
+            if node != nil { s += ", " }
+        }
+        return s + "]"
+    }
+}
+
+extension LinkedListNode: CustomStringConvertible {
+    public var description: String {
+        return "[" + "\(self.value)" + "]"
+    }
+}
+
+let list = LinkedList<String>()
+list.append(node: LinkedListNode.init(value: "1"))
+list.append(node: LinkedListNode.init(value: "2"))
+list.append(node: LinkedListNode.init(value: "3"))
+list.append(node: LinkedListNode.init(value: "4"))
+list.append(node: LinkedListNode.init(value: "5"))
+list.append(node: LinkedListNode.init(value: "6"))
+list.print()
+print(list.count())
+list.reciprocal(index: 0)
+print(list.reciprocal(index: 0))
+print(list.reciprocal(index: 1))
+print(list.reciprocal(index: 5))
+print(list.reciprocal(index: 6))
+print(list.reciprocal(index: 7))
+list.node(index: 0)
+list.node(index: 1)
+list.node(index: 2)
+list.node(index: 3)
+list.node(index: 4)
+list.node(index: 5)
+list.node(index: 6)
+
+
 
 
