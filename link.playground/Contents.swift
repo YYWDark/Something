@@ -35,18 +35,19 @@ public class LinkedList<T> {
     
     
     func node(index: Int) -> Node? {
-         var index = index
-         guard var node = head else {return nil}
-         var i = 0
-         while let next = node.next {
-            if i == index {return node}
-            node = next
-            i = i + 1
+        guard var node = head else {return nil}
+        var i = 0
+        for i in 0..<index {
+            if let next = node.next {
+                node = next
+            } else {
+                return nil
+            }
         }
-        return nil
+        return node
     }
     
-    func append(node: Node) {
+    func append(node: Node?) {
         guard let last = last() else {
             head = node
             return
@@ -73,6 +74,27 @@ public class LinkedList<T> {
             second = second.next!
         }
         return second
+    }
+    
+    func reversal() -> LinkedList? {
+        guard var node = head else {return nil}
+
+        var reversal: Node? = nil
+        while true {
+            if let next = node.next {
+                node.next = reversal
+                reversal = node
+                node = next
+            } else {
+                node.next = reversal
+                reversal = node
+                let list = LinkedList()
+                list.append(node: reversal)
+                return list
+            }
+          
+        }
+        return nil
     }
 }
 
@@ -117,6 +139,7 @@ list.node(index: 3)
 list.node(index: 4)
 list.node(index: 5)
 list.node(index: 6)
+list.reversal()
 
 
 
